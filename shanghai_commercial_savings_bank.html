@@ -1,0 +1,998 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SCSB | Shanghai Commercial & Savings Bank</title>
+    
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Load Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Niramit:wght@300;400;600&family=Noto+Serif+SC:wght@400;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        noir: '#0a0a0a',
+                        mafiaRed: '#5c0000',
+                        oldGold: '#c5a059',
+                        vintagePaper: '#eaddc5',
+                        darkWood: '#2c1e16',
+                    },
+                    fontFamily: {
+                        english: ['"Cinzel"', 'serif'],
+                        thai: ['"Niramit"', 'sans-serif'],
+                        chinese: ['"Noto Serif SC"', 'serif'],
+                    },
+                    boxShadow: {
+                        'gold-glow': '0 0 15px rgba(197, 160, 89, 0.3)',
+                        'inner-dark': 'inset 0 0 50px rgba(0,0,0,0.8)',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #0a0a0a;
+            color: #eaddc5;
+            font-family: 'Niramit', sans-serif;
+            background-image: url('https://www.transparenttextures.com/patterns/black-paper.png');
+            overflow-x: hidden;
+        }
+
+        .font-english { font-family: 'Cinzel', serif; }
+        .font-thai { font-family: 'Niramit', sans-serif; }
+        .font-chinese { font-family: 'Noto Serif SC', serif; }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #0a0a0a; }
+        ::-webkit-scrollbar-thumb { background: #c5a059; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #d4b572; }
+
+        /* Vintage Paper Texture */
+        .vintage-paper {
+            background-color: #eaddc5;
+            background-image: url('https://www.transparenttextures.com/patterns/aged-paper.png');
+            color: #2c1e16;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+        }
+
+        /* Gold Borders & Gradients */
+        .gold-border { border: 1px solid #c5a059; }
+        .gold-text { color: #c5a059; }
+        .gold-gradient { background: linear-gradient(135deg, #8a6d3b 0%, #c5a059 50%, #8a6d3b 100%); }
+
+        /* Stamp Effect */
+        .red-stamp {
+            color: #8b0000;
+            border: 3px solid #8b0000;
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            border-radius: 5px;
+            padding: 5px 15px;
+            transform: rotate(-15deg);
+            display: inline-block;
+            opacity: 0.8;
+            mix-blend-mode: multiply;
+        }
+        .dark-mode .red-stamp { mix-blend-mode: normal; border-color: #ff4d4d; color: #ff4d4d; }
+
+        /* Animations */
+        @keyframes dropBounce {
+            0% { transform: translateY(-100vh) scale(0.5); opacity: 0; }
+            60% { transform: translateY(10%) scale(1.1); opacity: 1; }
+            80% { transform: translateY(-5%) scale(0.95); }
+            100% { transform: translateY(0) scale(1); opacity: 1; }
+        }
+        @keyframes fadeOut {
+            to { opacity: 0; visibility: hidden; }
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes glow {
+            0% { box-shadow: 0 0 5px #c5a059; }
+            50% { box-shadow: 0 0 20px #c5a059; }
+            100% { box-shadow: 0 0 5px #c5a059; }
+        }
+
+        .animate-drop { animation: dropBounce 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards; }
+        .animate-fade-out { animation: fadeOut 1s ease-in forwards 2.5s; } /* Fades out after drop */
+        .animate-fade-in { animation: fadeIn 0.8s ease-out forwards; }
+        .animate-glow { animation: glow 3s infinite; }
+
+        /* Hide elements utility */
+        .hidden-view { display: none !important; }
+
+        /* Inputs */
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #c5a059;
+            box-shadow: 0 0 5px rgba(197, 160, 89, 0.5);
+        }
+        
+        .noir-input {
+            background: transparent;
+            border: none;
+            border-bottom: 2px solid #c5a059;
+            color: #eaddc5;
+            padding: 5px;
+            font-family: 'Cinzel', serif;
+            letter-spacing: 2px;
+        }
+        .noir-input::placeholder { color: #555; }
+
+        /* Tier Cards */
+        .tier-card { transition: all 0.5s ease; border-width: 2px; }
+        .tier-standard { border-color: #4a4a4a; background: linear-gradient(145deg, #1a1a1a, #0a0a0a); }
+        .tier-copper { border-color: #b87333; background: linear-gradient(145deg, #3a1a10, #1a0800); box-shadow: 0 0 15px rgba(184, 115, 51, 0.2); }
+        .tier-silver { border-color: #c0c0c0; background: linear-gradient(145deg, #2a2a2a, #111); box-shadow: 0 0 15px rgba(192, 192, 192, 0.2); }
+        .tier-gold { border-color: #ffd700; background: linear-gradient(145deg, #3a2e00, #1a1400); box-shadow: 0 0 20px rgba(255, 215, 0, 0.3); }
+        .tier-diamond { border-color: #b9f2ff; background: linear-gradient(145deg, #001a22, #000a0d); box-shadow: 0 0 25px rgba(185, 242, 255, 0.4); }
+
+        /* Notification Toast */
+        #toast-container {
+            position: fixed; top: 20px; right: 20px; z-index: 9999;
+        }
+        .toast {
+            background: #111; border: 1px solid #c5a059; padding: 15px 20px; margin-bottom: 10px;
+            border-left: 5px solid #c5a059; box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+            animation: fadeIn 0.3s, fadeOut 0.5s 3.5s forwards;
+        }
+    </style>
+</head>
+<body class="antialiased min-h-screen flex flex-col relative">
+
+    <div id="intro-screen" class="fixed inset-0 z-50 bg-black flex flex-col items-center justify-center animate-fade-out pointer-events-none">
+        <div class="animate-drop flex flex-col items-center">
+            <img src="3a15fb3e-5851-4372-ba8b-6a8798332678.jpg" alt="Logo" class="w-48 h-48 rounded-full border-4 border-oldGold shadow-gold-glow mb-6 object-cover">
+            <h1 class="font-english text-6xl md:text-8xl gold-text font-bold tracking-widest text-shadow-lg" style="text-shadow: 0 5px 15px rgba(197,160,89,0.5);">SCSB</h1>
+        </div>
+    </div>
+
+    <!-- Notification Container -->
+    <div id="toast-container"></div>
+
+    <!-- Navigation Bar -->
+    <nav class="border-b border-oldGold/30 bg-noir/90 backdrop-blur sticky top-0 z-40 hidden" id="main-nav">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center cursor-pointer" onclick="switchView('home')">
+                    <img src="3a15fb3e-5851-4372-ba8b-6a8798332678.jpg" alt="Logo" class="h-10 w-10 rounded-full border border-oldGold mr-3 object-cover">
+                    <span class="font-english gold-text font-bold text-xl tracking-wider hidden sm:block">SCSB</span>
+                </div>
+                <div class="flex items-center space-x-1 md:space-x-4">
+                    <button onclick="switchView('home')" class="text-gray-300 hover:gold-text px-3 py-2 rounded-md text-sm font-medium transition">หน้าแรก</button>
+                    <button onclick="switchView('members')" class="text-gray-300 hover:gold-text px-3 py-2 rounded-md text-sm font-medium transition">สมาชิก</button>
+                    <button onclick="switchView('verify')" class="text-gray-300 hover:gold-text px-3 py-2 rounded-md text-sm font-medium transition border border-transparent hover:border-oldGold/50">สมุดบัญชี</button>
+                    <button onclick="switchView('auth-login')" class="text-mafiaRed hover:text-red-400 px-3 py-2 rounded-md text-sm font-bold transition">ผู้กุมอำนาจ</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="flex-grow flex flex-col items-center justify-center p-4 sm:p-8 w-full max-w-7xl mx-auto opacity-0 transition-opacity duration-1000" id="main-content">
+        
+        <!-- View: Home -->
+        <div id="view-home" class="w-full max-w-3xl flex flex-col items-center text-center animate-fade-in">
+            <img src="3a15fb3e-5851-4372-ba8b-6a8798332678.jpg" alt="SCSB Logo" class="w-40 h-40 md:w-56 md:h-56 rounded-full border-2 border-oldGold shadow-gold-glow mb-8 object-cover">
+            
+            <h1 class="text-4xl md:text-6xl font-chinese gold-text mb-2 tracking-wide">上海商業儲蓄銀行</h1>
+            <h2 class="text-xl md:text-2xl font-english text-gray-400 mb-6 tracking-widest">SHANGHAI COMMERCIAL & SAVINGS BANK</h2>
+            
+            <div class="w-24 h-px gold-gradient my-6"></div>
+            
+            <p class="font-english italic text-xl md:text-2xl text-gray-300 mb-2">“Rebuilding Shanghai, One Account at a Time.”</p>
+            <p class="text-sm text-gray-500 mb-12">ระบบธนาคารจำลองสำหรับ Shanghai Community</p>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 w-full mt-4">
+                <button onclick="switchView('auth-login')" class="group relative overflow-hidden bg-noir border border-mafiaRed p-6 rounded hover:bg-mafiaRed/10 transition duration-300 flex flex-col items-center">
+                    <i class="fas fa-key text-3xl text-mafiaRed mb-3 group-hover:scale-110 transition"></i>
+                    <span class="font-bold text-lg text-gray-200">ผู้กุมอำนาจ</span>
+                    <span class="font-english text-xs text-mafiaRed mt-1 tracking-widest">AUTHORITY</span>
+                </button>
+                
+                <button onclick="switchView('members')" class="group relative overflow-hidden bg-noir border border-oldGold p-6 rounded hover:bg-oldGold/10 transition duration-300 flex flex-col items-center">
+                    <i class="fas fa-users text-3xl gold-text mb-3 group-hover:scale-110 transition"></i>
+                    <span class="font-bold text-lg text-gray-200">สมาชิกทั่วไป</span>
+                    <span class="font-english text-xs gold-text mt-1 tracking-widest">MEMBER</span>
+                </button>
+
+                <button onclick="switchView('verify')" class="group relative overflow-hidden bg-darkWood border border-oldGold p-6 rounded hover:bg-opacity-80 transition duration-300 flex flex-col items-center animate-glow">
+                    <i class="fas fa-book-journal-whills text-3xl text-vintagePaper mb-3 group-hover:scale-110 transition"></i>
+                    <span class="font-bold text-lg text-vintagePaper">เช็คข้อมูลสมุดบัญชี</span>
+                    <span class="font-english text-xs text-vintagePaper/70 mt-1 tracking-widest">ACCOUNT VERIFICATION</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- View: Authority Login -->
+        <div id="view-auth-login" class="hidden-view w-full max-w-md animate-fade-in">
+            <div class="bg-noir border border-mafiaRed p-8 rounded shadow-2xl relative overflow-hidden">
+                <div class="absolute top-0 left-0 w-full h-1 bg-mafiaRed"></div>
+                <div class="text-center mb-8">
+                    <i class="fas fa-shield-halved text-5xl text-mafiaRed mb-4"></i>
+                    <h2 class="text-2xl font-bold text-white tracking-widest">AUTHORITY OFFICE</h2>
+                    <p class="text-gray-500 text-sm mt-2 uppercase tracking-widest">Restricted Management Area</p>
+                </div>
+                
+                <div class="space-y-6">
+                    <div>
+                        <label class="block text-mafiaRed text-sm mb-2">รหัสลับผู้กุมอำนาจ (Access Code)</label>
+                        <input type="password" id="auth-password" class="w-full bg-black border border-mafiaRed text-mafiaRed p-3 rounded text-center tracking-[0.5em] focus:border-red-500 focus:ring-1 focus:ring-red-500 transition" placeholder="●●●●●●●●●●">
+                        <p id="auth-error" class="text-red-500 text-sm mt-2 hidden text-center">รหัสไม่ถูกต้อง — Access Denied</p>
+                    </div>
+                    <button onclick="loginAuthority()" class="w-full bg-mafiaRed hover:bg-red-800 text-white font-bold py-3 px-4 rounded tracking-wider transition">ENTER</button>
+                    <button onclick="switchView('home')" class="w-full bg-transparent border border-gray-700 text-gray-400 hover:text-white py-2 px-4 rounded transition mt-2">CANCEL</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- View: Authority Dashboard -->
+        <div id="view-auth-dashboard" class="hidden-view w-full animate-fade-in">
+            <div class="flex justify-between items-center mb-8 border-b border-mafiaRed pb-4">
+                <div>
+                    <h2 class="text-3xl font-bold text-white font-english">AUTHORITY CONTROL ROOM</h2>
+                    <p class="text-mafiaRed">ระบบจัดการส่วนกลาง</p>
+                </div>
+                <button onclick="logoutAuthority()" class="border border-mafiaRed text-mafiaRed hover:bg-mafiaRed hover:text-white px-4 py-2 rounded transition">
+                    <i class="fas fa-sign-out-alt mr-2"></i>LOGOUT
+                </button>
+            </div>
+
+            <!-- Stats -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+                <div class="bg-black border border-gray-800 p-4 rounded text-center">
+                    <p class="text-gray-500 text-sm">บัญชีทั้งหมด</p>
+                    <p class="text-2xl gold-text font-bold font-english" id="stat-total-accounts">0</p>
+                </div>
+                <div class="bg-black border border-gray-800 p-4 rounded text-center">
+                    <p class="text-gray-500 text-sm">เงินจำลองหมุนเวียน (¥)</p>
+                    <p class="text-2xl text-green-500 font-bold font-english" id="stat-total-money">0</p>
+                </div>
+                <div class="bg-black border border-gray-800 p-4 rounded text-center">
+                    <p class="text-gray-500 text-sm">รายการโอนทั้งหมด</p>
+                    <p class="text-2xl text-blue-400 font-bold font-english" id="stat-total-tx">0</p>
+                </div>
+                <div class="bg-black border border-gray-800 p-4 rounded text-center">
+                    <p class="text-gray-500 text-sm">บัญชีล่าสุด</p>
+                    <p class="text-lg text-gray-300 font-english mt-1" id="stat-latest-acc">-</p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <!-- Create Account Form -->
+                <div class="lg:col-span-1 bg-noir border border-oldGold p-6 rounded h-fit">
+                    <h3 class="text-xl gold-text mb-4 border-b border-gray-800 pb-2"><i class="fas fa-plus-circle mr-2"></i>เพิ่มสมุดบัญชีเงินฝาก</h3>
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-gray-400 text-sm mb-1">ชื่อผู้สมัคร</label>
+                            <input type="text" id="create-name" class="w-full bg-black border border-gray-700 text-white p-2 rounded focus:border-oldGold" placeholder="Name...">
+                        </div>
+                        <div>
+                            <label class="block text-gray-400 text-sm mb-1">วันที่สมัครสมุดบัญชี</label>
+                            <input type="date" id="create-date" class="w-full bg-black border border-gray-700 text-white p-2 rounded focus:border-oldGold" style="color-scheme: dark;">
+                        </div>
+                        <div>
+                            <label class="block text-gray-400 text-sm mb-1">จำนวนเงินเริ่มต้น (¥)</label>
+                            <input type="number" id="create-balance" class="w-full bg-black border border-gray-700 text-white p-2 rounded focus:border-oldGold" placeholder="0">
+                        </div>
+                        <div>
+                            <label class="block text-gray-400 text-sm mb-1">รหัสลับบัญชี (PIN)</label>
+                            <div class="flex">
+                                <input type="text" id="create-pin" class="w-full bg-black border border-gray-700 text-white p-2 rounded-l focus:border-oldGold" placeholder="กำหนดรหัสผ่าน">
+                                <button onclick="generateRandomPin()" class="bg-gray-800 px-3 rounded-r border border-gray-700 hover:bg-gray-700"><i class="fas fa-dice"></i></button>
+                            </div>
+                        </div>
+                        <button onclick="createAccount()" class="w-full bg-oldGold text-black font-bold py-2 rounded hover:bg-yellow-600 transition mt-4 shadow-gold-glow">สร้างสมุดบัญชี</button>
+                    </div>
+                </div>
+
+                <!-- Account List -->
+                <div class="lg:col-span-2 bg-noir border border-gray-800 p-6 rounded overflow-hidden flex flex-col">
+                    <h3 class="text-xl text-white mb-4 border-b border-gray-800 pb-2"><i class="fas fa-list mr-2"></i>จัดการบัญชีสมาชิก</h3>
+                    <div class="overflow-x-auto flex-grow">
+                        <table class="w-full text-left border-collapse">
+                            <thead>
+                                <tr class="text-gray-500 text-sm border-b border-gray-800">
+                                    <th class="py-2 px-3">รหัสบัญชี</th>
+                                    <th class="py-2 px-3">ชื่อผู้สมัคร</th>
+                                    <th class="py-2 px-3">ยอดเงิน (¥)</th>
+                                    <th class="py-2 px-3">สถานะ</th>
+                                    <th class="py-2 px-3 text-right">จัดการ</th>
+                                </tr>
+                            </thead>
+                            <tbody id="auth-account-list" class="text-sm font-english">
+                                <!-- Populated by JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- View: Members -->
+        <div id="view-members" class="hidden-view w-full animate-fade-in">
+            <div class="text-center mb-10">
+                <h2 class="text-4xl font-bold gold-text font-english mb-2">MEMBER LEDGER</h2>
+                <p class="text-gray-400">สมุดรายชื่อบัญชีจำลองทั้งหมด</p>
+            </div>
+
+            <div class="max-w-md mx-auto mb-10">
+                <div class="relative">
+                    <input type="text" id="member-search" onkeyup="renderMembers()" class="w-full bg-black border-2 border-gray-800 text-white py-3 px-4 pl-12 rounded-full focus:border-oldGold transition" placeholder="ค้นหาบัญชีด้วยรหัสบัญชี... (เช่น SCSB-1001)">
+                    <i class="fas fa-search absolute left-4 top-3.5 text-gray-500 text-lg"></i>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="member-grid">
+                <!-- Populated by JS -->
+            </div>
+        </div>
+
+        <!-- View: Verify Login -->
+        <div id="view-verify" class="hidden-view w-full max-w-md animate-fade-in">
+            <div class="vintage-paper p-8 rounded shadow-2xl relative">
+                <div class="absolute inset-2 border-2 border-double border-gray-400 rounded opacity-50 pointer-events-none"></div>
+                <div class="text-center mb-8 relative z-10">
+                    <img src="3a15fb3e-5851-4372-ba8b-6a8798332678.jpg" class="w-16 h-16 mx-auto mb-2 opacity-80 rounded-full mix-blend-multiply" alt="seal">
+                    <h2 class="text-2xl font-bold text-darkWood">ตรวจสอบข้อมูลสมุดบัญชี</h2>
+                    <p class="text-gray-600 text-sm font-english tracking-widest mt-1">ACCOUNT BOOK VERIFICATION</p>
+                </div>
+                
+                <div class="space-y-6 relative z-10">
+                    <div>
+                        <label class="block text-darkWood text-sm font-bold mb-1">รหัสบัญชี (Account ID)</label>
+                        <input type="text" id="verify-id" class="w-full bg-transparent border-b-2 border-darkWood text-darkWood p-2 font-english focus:outline-none focus:border-red-800" placeholder="SCSB-XXXX">
+                    </div>
+                    <div>
+                        <label class="block text-darkWood text-sm font-bold mb-1">รหัสลับบัญชี (Secret PIN)</label>
+                        <input type="password" id="verify-pin" class="w-full bg-transparent border-b-2 border-darkWood text-darkWood p-2 focus:outline-none focus:border-red-800" placeholder="••••••••">
+                    </div>
+                    <p id="verify-error" class="text-red-700 text-sm mt-2 hidden text-center font-bold">ข้อมูลไม่ถูกต้อง</p>
+                    
+                    <button onclick="verifyAccount()" class="w-full bg-darkWood text-vintagePaper font-bold py-3 rounded mt-4 hover:bg-black transition border border-gray-600 shadow-lg">VERIFY ACCOUNT</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- View: Account Book (Logged In) -->
+        <div id="view-account-book" class="hidden-view w-full max-w-4xl animate-fade-in">
+            <!-- Header actions -->
+            <div class="flex justify-between items-center mb-6">
+                <button onclick="switchView('verify')" class="text-gray-400 hover:text-white"><i class="fas fa-arrow-left mr-2"></i>ออกจากระบบสมุดบัญชี</button>
+                <div id="acc-tier-badge" class="px-4 py-1 rounded-full text-sm font-bold border flex items-center shadow-lg">
+                    <!-- Tier Badge JS -->
+                </div>
+            </div>
+
+            <!-- Main Card -->
+            <div id="acc-card-bg" class="tier-card rounded-xl p-8 mb-8 relative overflow-hidden">
+                <!-- Background decorative logo -->
+                <img src="3a15fb3e-5851-4372-ba8b-6a8798332678.jpg" class="absolute -right-20 -bottom-20 w-96 h-96 opacity-5 rounded-full object-cover mix-blend-screen pointer-events-none" alt="bg">
+                
+                <div class="relative z-10 flex flex-col md:flex-row justify-between items-start md:items-center">
+                    <div>
+                        <p class="text-gray-400 text-sm mb-1">ยอดเงินในบัญชี (Balance)</p>
+                        <h2 class="text-5xl md:text-6xl font-bold font-english mb-4" style="text-shadow: 2px 2px 4px rgba(0,0,0,0.5);">
+                            <span class="text-oldGold mr-2">¥</span><span id="acc-balance">0</span>
+                        </h2>
+                        <div class="flex flex-col space-y-1">
+                            <p class="text-lg text-white font-bold"><span class="text-gray-400 text-sm font-normal mr-2">ชื่อ:</span><span id="acc-name">Name</span></p>
+                            <p class="text-lg text-white font-english"><span class="text-gray-400 text-sm font-normal mr-2 font-thai">รหัสบัญชี:</span><span id="acc-id">SCSB-XXXX</span></p>
+                        </div>
+                    </div>
+                    <div class="mt-6 md:mt-0 text-right flex flex-col items-end">
+                        <p class="text-gray-400 text-sm mb-1">วันที่สมัคร</p>
+                        <p class="text-white font-english mb-6" id="acc-date">DD/MM/YYYY</p>
+                        
+                        <button onclick="openTransferModal()" class="bg-gradient-to-r from-oldGold to-yellow-700 text-black font-bold py-3 px-8 rounded shadow-gold-glow hover:scale-105 transition transform flex items-center">
+                            <i class="fas fa-exchange-alt mr-2"></i> โอนเงิน / TRANSFER
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Transaction History -->
+            <div class="bg-noir border border-gray-800 rounded p-6">
+                <h3 class="text-xl gold-text mb-4 border-b border-gray-800 pb-2 font-english tracking-widest">TRANSACTION HISTORY</h3>
+                <div class="space-y-4" id="acc-history">
+                    <!-- Populated by JS -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Transfer Modal -->
+        <div id="modal-transfer" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden flex items-center justify-center p-4">
+            <div class="bg-noir border border-oldGold p-6 md:p-8 rounded-lg shadow-2xl w-full max-w-md relative animate-drop">
+                <button onclick="closeTransferModal()" class="absolute top-4 right-4 text-gray-500 hover:text-white"><i class="fas fa-times text-xl"></i></button>
+                
+                <h3 class="text-2xl gold-text mb-2 font-english">TRANSFER FUNDS</h3>
+                <p class="text-sm text-gray-400 mb-6 border-b border-gray-800 pb-4">โอนเงินไปยังบัญชีอื่นภายในเซี่ยงไฮ้</p>
+
+                <div class="space-y-5">
+                    <div>
+                        <label class="block text-gray-300 text-sm mb-1">1. รหัสบัญชีผู้รับ <span class="text-red-500">*</span></label>
+                        <input type="text" id="transfer-to" class="noir-input w-full" placeholder="SCSB-XXXX" oninput="this.value = this.value.toUpperCase()">
+                    </div>
+                    <div>
+                        <label class="block text-gray-300 text-sm mb-1">2. จำนวนเงินที่จะโอน (¥) <span class="text-red-500">*</span></label>
+                        <div class="relative">
+                            <span class="absolute left-0 top-2 text-oldGold font-bold">¥</span>
+                            <input type="number" id="transfer-amount" class="noir-input w-full pl-6" placeholder="0">
+                        </div>
+                        <p class="text-xs text-gray-500 mt-1">ยอดเงินคงเหลือ: ¥<span id="transfer-max">0</span></p>
+                    </div>
+                    <div>
+                        <label class="block text-gray-300 text-sm mb-1">3. โน้ตฝากบอก (Optional)</label>
+                        <input type="text" id="transfer-note" class="noir-input w-full text-sm" placeholder="ข้อความถึงผู้รับ...">
+                    </div>
+
+                    <p id="transfer-error" class="text-red-500 text-sm text-center hidden bg-red-900/20 p-2 rounded border border-red-900"></p>
+
+                    <button onclick="executeTransfer()" class="w-full bg-oldGold text-black font-bold py-3 rounded hover:bg-yellow-600 transition mt-4">ยืนยันการโอน</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- View: Transfer Slip -->
+        <div id="view-slip" class="hidden-view w-full flex justify-center animate-fade-in items-center py-10">
+            <div id="slip-container" class="vintage-paper p-8 md:p-12 w-full max-w-lg relative shadow-2xl">
+                <!-- Decorative border -->
+                <div class="absolute inset-3 border border-darkWood opacity-30 pointer-events-none"></div>
+                <div class="absolute inset-4 border border-darkWood opacity-30 pointer-events-none"></div>
+                
+                <!-- Logo & Header -->
+                <div class="text-center mb-8 border-b-2 border-darkWood pb-6 relative">
+                    <img src="3a15fb3e-5851-4372-ba8b-6a8798332678.jpg" class="w-20 h-20 mx-auto mb-3 mix-blend-multiply opacity-90 rounded-full object-cover" alt="logo">
+                    <h2 class="text-2xl font-bold text-darkWood font-english tracking-widest">S C S B</h2>
+                    <p class="text-xs text-darkWood tracking-widest mt-1">SHANGHAI COMMERCIAL & SAVINGS BANK</p>
+                    <div class="mt-4 bg-darkWood text-vintagePaper inline-block px-4 py-1 text-sm font-bold tracking-widest rounded-sm">TRANSFER RECEIPT</div>
+                    
+                    <!-- Stamp -->
+                    <div class="absolute right-0 top-10 transform translate-x-4">
+                        <div class="red-stamp">COMPLETED</div>
+                    </div>
+                </div>
+
+                <!-- Details -->
+                <div class="space-y-4 text-darkWood font-english">
+                    <div class="flex justify-between border-b border-gray-400 border-dotted pb-1">
+                        <span class="text-sm font-thai font-bold">วันที่โอน:</span>
+                        <span id="slip-date" class="font-bold"></span>
+                    </div>
+                    <div class="flex justify-between border-b border-gray-400 border-dotted pb-1">
+                        <span class="text-sm font-thai font-bold">เลขอ้างอิง:</span>
+                        <span id="slip-ref" class="text-sm"></span>
+                    </div>
+                    <div class="mt-6 pt-4">
+                        <p class="text-sm text-gray-600 font-thai mb-1">จากบัญชี (FROM):</p>
+                        <p class="font-bold text-lg" id="slip-from"></p>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-600 font-thai mb-1">ถึงบัญชี (TO):</p>
+                        <p class="font-bold text-lg" id="slip-to"></p>
+                    </div>
+                    
+                    <div class="my-6 bg-darkWood/10 p-4 text-center rounded border border-darkWood/20">
+                        <p class="text-sm text-gray-600 font-thai mb-1">จำนวนเงิน (AMOUNT)</p>
+                        <p class="text-3xl font-bold text-darkWood">¥ <span id="slip-amount"></span></p>
+                    </div>
+
+                    <div class="border-t border-darkWood pt-4">
+                        <p class="text-sm text-gray-600 font-thai mb-1">โน้ตฝากบอก (NOTE):</p>
+                        <p class="italic text-sm" id="slip-note">-</p>
+                    </div>
+                </div>
+
+                <!-- Footer Actions (Not printed) -->
+                <div class="mt-10 flex justify-center space-x-4" id="slip-actions">
+                    <button onclick="window.print()" class="bg-darkWood text-vintagePaper px-4 py-2 rounded text-sm hover:bg-black transition"><i class="fas fa-print mr-2"></i>พิมพ์สลิป</button>
+                    <button onclick="switchView('account-book')" class="border border-darkWood text-darkWood px-4 py-2 rounded text-sm hover:bg-darkWood hover:text-vintagePaper transition">กลับไปบัญชี</button>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Modal for Authority Edit -->
+    <div id="modal-auth-edit" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden flex items-center justify-center p-4">
+        <div class="bg-noir border border-mafiaRed p-6 rounded-lg shadow-2xl w-full max-w-md relative">
+            <h3 class="text-xl text-white mb-4">แก้ไขบัญชี <span id="edit-id-display" class="gold-text"></span></h3>
+            <input type="hidden" id="edit-id">
+            <div class="space-y-3">
+                <div><label class="text-xs text-gray-400">ชื่อ</label><input type="text" id="edit-name" class="w-full bg-black border border-gray-700 text-white p-2 rounded"></div>
+                <div><label class="text-xs text-gray-400">ยอดเงิน (จำลอง)</label><input type="number" id="edit-balance" class="w-full bg-black border border-gray-700 text-white p-2 rounded"></div>
+                <div><label class="text-xs text-gray-400">PIN ใหม่ (เว้นว่างถ้าไม่เปลี่ยน)</label><input type="text" id="edit-pin" class="w-full bg-black border border-gray-700 text-white p-2 rounded" placeholder="PIN ใหม่"></div>
+            </div>
+            <div class="mt-6 flex justify-end space-x-2">
+                <button onclick="document.getElementById('modal-auth-edit').classList.add('hidden')" class="px-4 py-2 border border-gray-600 text-gray-400 rounded hover:text-white">ยกเลิก</button>
+                <button onclick="saveAuthEdit()" class="px-4 py-2 bg-mafiaRed text-white rounded hover:bg-red-800">บันทึก</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for Authority History -->
+    <div id="modal-auth-history" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden flex items-center justify-center p-4">
+        <div class="bg-noir border border-gray-500 p-6 rounded-lg shadow-2xl w-full max-w-2xl relative max-h-[80vh] flex flex-col">
+            <button onclick="document.getElementById('modal-auth-history').classList.add('hidden')" class="absolute top-4 right-4 text-gray-500 hover:text-white"><i class="fas fa-times"></i></button>
+            <h3 class="text-xl text-white mb-4">ประวัติบัญชี: <span id="history-id-display" class="gold-text"></span></h3>
+            <div class="overflow-y-auto flex-grow bg-black p-4 rounded border border-gray-800">
+                <div id="auth-history-content" class="space-y-3 text-sm"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- System State & Database ---
+        const DB_KEY = 'scsb_roleplay_db';
+        let db = {
+            accounts: [],
+            sequence: 1000 // To generate IDs like SCSB-1001
+        };
+
+        let currentLoggedInAccount = null;
+
+        // Initialize Database
+        function initDB() {
+            const saved = localStorage.getItem(DB_KEY);
+            if (saved) {
+                db = JSON.parse(saved);
+            } else {
+                saveDB();
+            }
+        }
+
+        function saveDB() {
+            localStorage.setItem(DB_KEY, JSON.stringify(db));
+        }
+
+        // --- Helpers ---
+        const formatMoney = (amount) => Number(amount).toLocaleString('en-US');
+        const formatDate = (dateString) => {
+            const d = new Date(dateString);
+            return `${d.getDate().toString().padStart(2,'0')}/${(d.getMonth()+1).toString().padStart(2,'0')}/${d.getFullYear()}`;
+        };
+        const generateId = () => {
+            db.sequence++;
+            saveDB();
+            return `SCSB-${db.sequence}`;
+        };
+        const generateRandomPin = () => {
+            document.getElementById('create-pin').value = Math.floor(10000000 + Math.random() * 90000000).toString();
+        };
+
+        function showToast(message, type = 'info') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = `toast text-white ${type === 'error' ? 'border-red-500 border-l-red-500' : ''}`;
+            toast.innerHTML = `<i class="fas ${type === 'error' ? 'fa-exclamation-circle text-red-500' : 'fa-info-circle gold-text'} mr-2"></i> ${message}`;
+            container.appendChild(toast);
+            setTimeout(() => {
+                if(toast.parentElement) toast.remove();
+            }, 4000);
+        }
+
+        // --- View Controller ---
+        const views = ['home', 'auth-login', 'auth-dashboard', 'members', 'verify', 'account-book', 'slip'];
+        
+        function switchView(viewId) {
+            views.forEach(v => document.getElementById(`view-${v}`).classList.add('hidden-view'));
+            
+            // Show selected view
+            const target = document.getElementById(`view-${viewId}`);
+            target.classList.remove('hidden-view');
+            
+            // Re-trigger animation
+            target.classList.remove('animate-fade-in');
+            void target.offsetWidth; // trigger reflow
+            target.classList.add('animate-fade-in');
+
+            // Specific view logic
+            if(viewId === 'auth-dashboard') updateAuthDashboard();
+            if(viewId === 'members') renderMembers();
+            if(viewId !== 'account-book' && viewId !== 'slip') {
+                currentLoggedInAccount = null; // Logout if leaving account area
+                document.getElementById('verify-id').value = '';
+                document.getElementById('verify-pin').value = '';
+            }
+        }
+
+        // --- Startup ---
+        window.onload = () => {
+            initDB();
+            
+            // Today for date inputs
+            document.getElementById('create-date').valueAsDate = new Date();
+
+            // Intro sequence
+            setTimeout(() => {
+                document.getElementById('intro-screen').style.display = 'none';
+                document.getElementById('main-nav').classList.remove('hidden');
+                document.getElementById('main-content').classList.remove('opacity-0');
+                switchView('home');
+            }, 3000);
+        };
+
+        // --- Authority Logic ---
+        function loginAuthority() {
+            const pwd = document.getElementById('auth-password').value;
+            const err = document.getElementById('auth-error');
+            if (pwd === 'mjmingzhou2025') {
+                err.classList.add('hidden');
+                document.getElementById('auth-password').value = '';
+                switchView('auth-dashboard');
+            } else {
+                err.classList.remove('hidden');
+            }
+        }
+
+        function logoutAuthority() {
+            switchView('home');
+        }
+
+        function updateAuthDashboard() {
+            document.getElementById('stat-total-accounts').innerText = db.accounts.length;
+            const totalMoney = db.accounts.reduce((sum, acc) => sum + Number(acc.balance), 0);
+            document.getElementById('stat-total-money').innerText = formatMoney(totalMoney);
+            
+            let txCount = 0;
+            db.accounts.forEach(acc => txCount += acc.transactions.length);
+            document.getElementById('stat-total-tx').innerText = txCount;
+
+            if(db.accounts.length > 0) {
+                document.getElementById('stat-latest-acc').innerText = db.accounts[db.accounts.length-1].id;
+            }
+
+            renderAuthTable();
+        }
+
+        function createAccount() {
+            const name = document.getElementById('create-name').value;
+            const date = document.getElementById('create-date').value;
+            const balance = Number(document.getElementById('create-balance').value) || 0;
+            const pin = document.getElementById('create-pin').value;
+
+            if(!name || !pin) {
+                alert("กรุณากรอกชื่อและรหัสลับ"); return;
+            }
+
+            const newAcc = {
+                id: generateId(),
+                name: name,
+                date: date,
+                balance: balance,
+                pin: pin,
+                transactions: [
+                    {
+                        id: 'TXN-' + Math.floor(Math.random()*10000),
+                        date: new Date().toISOString(),
+                        type: 'DEPOSIT',
+                        amount: balance,
+                        peer: 'System',
+                        note: 'เปิดบัญชี / เงินฝากเริ่มต้น',
+                        balanceAfter: balance
+                    }
+                ]
+            };
+
+            db.accounts.push(newAcc);
+            saveDB();
+            
+            // Clear form
+            document.getElementById('create-name').value = '';
+            document.getElementById('create-balance').value = '';
+            document.getElementById('create-pin').value = '';
+            
+            showToast(`สร้างบัญชี ${newAcc.id} สำเร็จ`);
+            updateAuthDashboard();
+        }
+
+        function renderAuthTable() {
+            const tbody = document.getElementById('auth-account-list');
+            tbody.innerHTML = '';
+            db.accounts.forEach((acc, index) => {
+                const tr = document.createElement('tr');
+                tr.className = "border-b border-gray-800 hover:bg-gray-900 transition";
+                tr.innerHTML = `
+                    <td class="py-3 px-3 text-oldGold font-bold">${acc.id}</td>
+                    <td class="py-3 px-3 text-white">${acc.name}</td>
+                    <td class="py-3 px-3 text-green-400 font-bold">¥${formatMoney(acc.balance)}</td>
+                    <td class="py-3 px-3"><span class="bg-gray-800 text-xs px-2 py-1 rounded">Active</span></td>
+                    <td class="py-3 px-3 text-right space-x-2">
+                        <button onclick="openAuthEdit('${acc.id}')" class="text-blue-400 hover:text-blue-300" title="แก้ไข"><i class="fas fa-edit"></i></button>
+                        <button onclick="openAuthHistory('${acc.id}')" class="text-gray-400 hover:text-white" title="ประวัติ"><i class="fas fa-history"></i></button>
+                        <button onclick="deleteAccount('${acc.id}')" class="text-red-500 hover:text-red-400" title="ลบ"><i class="fas fa-trash"></i></button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function deleteAccount(id) {
+            if(confirm(`ต้องการลบบัญชี ${id} ใช่หรือไม่? ข้อมูลจะหายไปถาวร`)) {
+                db.accounts = db.accounts.filter(a => a.id !== id);
+                saveDB();
+                updateAuthDashboard();
+            }
+        }
+
+        function openAuthEdit(id) {
+            const acc = db.accounts.find(a => a.id === id);
+            if(!acc) return;
+            document.getElementById('edit-id').value = acc.id;
+            document.getElementById('edit-id-display').innerText = acc.id;
+            document.getElementById('edit-name').value = acc.name;
+            document.getElementById('edit-balance').value = acc.balance;
+            document.getElementById('edit-pin').value = ''; // clear for new
+            document.getElementById('modal-auth-edit').classList.remove('hidden');
+        }
+
+        function saveAuthEdit() {
+            const id = document.getElementById('edit-id').value;
+            const acc = db.accounts.find(a => a.id === id);
+            if(!acc) return;
+
+            acc.name = document.getElementById('edit-name').value;
+            const newBalance = Number(document.getElementById('edit-balance').value);
+            const newPin = document.getElementById('edit-pin').value;
+            
+            if(newPin) acc.pin = newPin;
+
+            if(newBalance !== acc.balance) {
+                acc.transactions.unshift({
+                    id: 'TXN-' + Math.floor(Math.random()*10000),
+                    date: new Date().toISOString(),
+                    type: newBalance > acc.balance ? 'DEPOSIT' : 'WITHDRAW',
+                    amount: Math.abs(newBalance - acc.balance),
+                    peer: 'Authority',
+                    note: 'ปรับยอดโดยผู้กุมอำนาจ',
+                    balanceAfter: newBalance
+                });
+                acc.balance = newBalance;
+            }
+
+            saveDB();
+            document.getElementById('modal-auth-edit').classList.add('hidden');
+            updateAuthDashboard();
+        }
+
+        function openAuthHistory(id) {
+            const acc = db.accounts.find(a => a.id === id);
+            if(!acc) return;
+            document.getElementById('history-id-display').innerText = acc.id;
+            const content = document.getElementById('auth-history-content');
+            content.innerHTML = '';
+            
+            if(acc.transactions.length === 0) content.innerHTML = '<p class="text-gray-500">ไม่มีรายการ</p>';
+            
+            acc.transactions.forEach(tx => {
+                const isPos = tx.type === 'DEPOSIT' || tx.type === 'TRANSFER IN';
+                const color = isPos ? 'text-green-500' : 'text-red-500';
+                const sign = isPos ? '+' : '-';
+                content.innerHTML += `
+                    <div class="border-b border-gray-800 pb-2">
+                        <div class="flex justify-between">
+                            <span class="text-gray-400 text-xs">${formatDate(tx.date)}</span>
+                            <span class="font-bold ${color}">${sign}¥${formatMoney(tx.amount)}</span>
+                        </div>
+                        <div class="text-white text-sm">${tx.type} | <span class="text-gray-400">ยอดยกไป: ¥${formatMoney(tx.balanceAfter)}</span></div>
+                        <div class="text-gray-500 text-xs">Note: ${tx.note}</div>
+                    </div>
+                `;
+            });
+            document.getElementById('modal-auth-history').classList.remove('hidden');
+        }
+
+        // --- Member Logic ---
+        function renderMembers() {
+            const query = document.getElementById('member-search').value.toLowerCase();
+            const grid = document.getElementById('member-grid');
+            grid.innerHTML = '';
+
+            db.accounts.forEach(acc => {
+                // Search ONLY by ID
+                if(query && !acc.id.toLowerCase().includes(query)) return;
+
+                const card = document.createElement('div');
+                card.className = "bg-noir border border-gray-800 p-5 rounded hover:border-oldGold transition duration-300 relative overflow-hidden group cursor-pointer";
+                card.onclick = () => { document.getElementById('verify-id').value = acc.id; switchView('verify'); };
+                
+                // Vintage watermark
+                card.innerHTML = `
+                    <div class="absolute -right-4 -bottom-4 opacity-5 group-hover:opacity-10 transition">
+                        <img src="3a15fb3e-5851-4372-ba8b-6a8798332678.jpg" class="w-24 h-24 rounded-full mix-blend-screen object-cover">
+                    </div>
+                    <div class="relative z-10">
+                        <div class="flex justify-between items-start mb-2">
+                            <span class="text-oldGold font-bold font-english text-lg tracking-wider">${acc.id}</span>
+                            <span class="text-xs text-gray-600 font-english">${formatDate(acc.date)}</span>
+                        </div>
+                        <h4 class="text-white text-lg mb-4">${acc.name}</h4>
+                        <div class="border-t border-gray-800 pt-3 flex justify-between items-end">
+                            <span class="text-gray-500 text-xs">Balance</span>
+                            <span class="text-xl font-bold font-english text-gray-300">¥${formatMoney(acc.balance)}</span>
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+
+            if(grid.innerHTML === '') {
+                grid.innerHTML = '<p class="text-gray-500 col-span-full text-center py-10">ไม่พบบัญชีที่ค้นหา</p>';
+            }
+        }
+
+        // --- Verification Logic ---
+        function verifyAccount() {
+            const id = document.getElementById('verify-id').value.toUpperCase();
+            const pin = document.getElementById('verify-pin').value;
+            const err = document.getElementById('verify-error');
+
+            const acc = db.accounts.find(a => a.id === id && a.pin === pin);
+            
+            if(acc) {
+                err.classList.add('hidden');
+                currentLoggedInAccount = acc;
+                renderAccountBook();
+                switchView('account-book');
+            } else {
+                err.classList.remove('hidden');
+            }
+        }
+
+        // Tier Logic
+        function getTierInfo(balance) {
+            if(balance >= 1000000) return { name: "Diamond Card", label: "การ์ดเพชร", cls: "tier-diamond", text: "text-cyan-300" };
+            if(balance >= 100000) return { name: "Gold Card", label: "การ์ดทอง", cls: "tier-gold", text: "text-yellow-400" };
+            if(balance >= 50000) return { name: "Silver Card", label: "การ์ดเงิน", cls: "tier-silver", text: "text-gray-300" };
+            if(balance >= 10000) return { name: "Copper Card", label: "การ์ดทองแดง", cls: "tier-copper", text: "text-orange-400" }; // Requested "ทอดแดง"
+            return { name: "Standard Account", label: "บัญชีทั่วไป", cls: "tier-standard", text: "text-gray-400" };
+        }
+
+        function renderAccountBook() {
+            if(!currentLoggedInAccount) return;
+            const acc = currentLoggedInAccount;
+
+            // Update Header
+            document.getElementById('acc-balance').innerText = formatMoney(acc.balance);
+            document.getElementById('acc-name').innerText = acc.name;
+            document.getElementById('acc-id').innerText = acc.id;
+            document.getElementById('acc-date').innerText = formatDate(acc.date);
+
+            // Apply Tier Styling
+            const tier = getTierInfo(acc.balance);
+            const bgCard = document.getElementById('acc-card-bg');
+            bgCard.className = `tier-card rounded-xl p-8 mb-8 relative overflow-hidden ${tier.cls}`;
+            
+            const badge = document.getElementById('acc-tier-badge');
+            badge.className = `px-4 py-1 rounded-full text-sm font-bold border flex items-center shadow-lg ${tier.text} border-current bg-black/50`;
+            badge.innerHTML = `<i class="fas fa-crown mr-2"></i> ${tier.label} | ${tier.name}`;
+
+            // Show Notification if tiered
+            if(acc.balance >= 10000) {
+                showToast(`ยินดีด้วย! บัญชีของคุณได้รับการเลื่อนขั้นเป็น ${tier.label}`);
+            }
+
+            // Render History
+            const histContainer = document.getElementById('acc-history');
+            histContainer.innerHTML = '';
+            
+            if(acc.transactions.length === 0) {
+                histContainer.innerHTML = '<p class="text-gray-500 text-center py-4">ไม่มีรายการธุรกรรม</p>';
+            }
+
+            // Sort newest first
+            const sortedTx = [...acc.transactions].sort((a,b) => new Date(b.date) - new Date(a.date));
+
+            sortedTx.forEach(tx => {
+                const isPos = tx.type === 'DEPOSIT' || tx.type === 'TRANSFER IN';
+                const sign = isPos ? '+' : '-';
+                const color = isPos ? 'text-green-500' : 'text-red-500';
+                
+                let detailText = '';
+                if(tx.type === 'TRANSFER IN') detailText = `ได้รับจากบัญชี: <span class="font-bold">${tx.peer}</span>`;
+                else if(tx.type === 'TRANSFER OUT') detailText = `โอนไปบัญชี: <span class="font-bold">${tx.peer}</span>`;
+                else detailText = `ระบบ: ${tx.note}`;
+
+                const item = document.createElement('div');
+                item.className = "flex justify-between items-center border-b border-gray-800 pb-3 last:border-0";
+                item.innerHTML = `
+                    <div class="flex-1">
+                        <p class="text-sm font-bold text-white mb-1 tracking-wider">${tx.type}</p>
+                        <p class="text-xs text-gray-400 mb-1">${detailText}</p>
+                        <p class="text-xs text-gray-500"><i class="far fa-clock mr-1"></i>${formatDate(tx.date)}</p>
+                    </div>
+                    <div class="text-right">
+                        <p class="text-xl font-bold font-english ${color}">${sign} ¥${formatMoney(tx.amount)}</p>
+                        <p class="text-xs text-gray-500 mt-1">คงเหลือ: ¥${formatMoney(tx.balanceAfter)}</p>
+                    </div>
+                `;
+                histContainer.appendChild(item);
+            });
+        }
+
+        // --- Transfer System ---
+        function openTransferModal() {
+            if(!currentLoggedInAccount) return;
+            document.getElementById('transfer-to').value = '';
+            document.getElementById('transfer-amount').value = '';
+            document.getElementById('transfer-note').value = '';
+            document.getElementById('transfer-max').innerText = formatMoney(currentLoggedInAccount.balance);
+            document.getElementById('transfer-error').classList.add('hidden');
+            document.getElementById('modal-transfer').classList.remove('hidden');
+        }
+
+        function closeTransferModal() {
+            document.getElementById('modal-transfer').classList.add('hidden');
+        }
+
+        function executeTransfer() {
+            const err = document.getElementById('transfer-error');
+            const toId = document.getElementById('transfer-to').value.toUpperCase();
+            const amount = Number(document.getElementById('transfer-amount').value);
+            const note = document.getElementById('transfer-note').value || '-';
+
+            err.classList.add('hidden');
+
+            // Validations
+            if(!toId || !amount) { err.innerText = "กรุณากรอกข้อมูลให้ครบถ้วน"; err.classList.remove('hidden'); return; }
+            if(amount <= 0) { err.innerText = "จำนวนเงินต้องมากกว่า 0"; err.classList.remove('hidden'); return; }
+            if(amount > currentLoggedInAccount.balance) { err.innerText = "ยอดเงินในบัญชีไม่เพียงพอ"; err.classList.remove('hidden'); return; }
+            if(toId === currentLoggedInAccount.id) { err.innerText = "ไม่สามารถโอนเข้าบัญชีตัวเองได้"; err.classList.remove('hidden'); return; }
+            
+            const targetAcc = db.accounts.find(a => a.id === toId);
+            if(!targetAcc) { err.innerText = "ไม่พบรหัสบัญชีผู้รับในระบบ"; err.classList.remove('hidden'); return; }
+
+            // Execution Step 1 & 2: Deduct and Add
+            currentLoggedInAccount.balance -= amount;
+            targetAcc.balance += amount;
+
+            const dateStr = new Date().toISOString();
+            const refNo = `TXN-${new Date().getFullYear()}-${Math.floor(Math.random()*9000)+1000}`;
+
+            // Step 3: Sender Ledger
+            currentLoggedInAccount.transactions.unshift({
+                id: refNo, date: dateStr, type: 'TRANSFER OUT', amount: amount, peer: targetAcc.id, note: note, balanceAfter: currentLoggedInAccount.balance
+            });
+
+            // Step 4: Receiver Ledger
+            targetAcc.transactions.unshift({
+                id: refNo, date: dateStr, type: 'TRANSFER IN', amount: amount, peer: currentLoggedInAccount.id, note: note, balanceAfter: targetAcc.balance
+            });
+
+            // Save and Update
+            saveDB();
+            closeTransferModal();
+            renderAccountBook(); // Refresh view
+            
+            // Generate Slip
+            generateSlip(refNo, dateStr, currentLoggedInAccount.id, targetAcc.id, amount, note);
+        }
+
+        function generateSlip(ref, date, from, to, amount, note) {
+            document.getElementById('slip-date').innerText = formatDate(date);
+            document.getElementById('slip-ref').innerText = ref;
+            document.getElementById('slip-from').innerText = from;
+            document.getElementById('slip-to').innerText = to;
+            document.getElementById('slip-amount').innerText = formatMoney(amount);
+            document.getElementById('slip-note').innerText = note;
+
+            switchView('slip');
+        }
+
+    </script>
+</body>
+</html>
